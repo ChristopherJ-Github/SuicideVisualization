@@ -1,19 +1,40 @@
-Table table;
+int[] years;
 
 void setup() {
   
-  table = loadTable("indicator_t above 15 unemploy JAPAN.csv", "header");
+  size(1280, 720);
+  InitializeUnemploymentData();
+  InitializeSuicideData();
+}
 
-  println(table.getRowCount() + " total rows in table"); 
+float[] unemploymentData;
 
-  for (TableRow row : table.rows()) {
+void InitializeUnemploymentData () {
+  
+  Table unemploymentTable = loadTable("indicator_t above 15 unemploy JAPAN.csv", "header");
+  String[] unemploymentDataStr = unemploymentTable.getStringColumn("Total 15+ unemployment (%)");
+  unemploymentData = new float[unemploymentDataStr.length];
+  for (int i = 0; i < unemploymentData.length; i ++) {
     
-   float percentage = row.getFloat("Total 15+ unemployment (%)");
-   String year = row.getString("Year");
-   println("year: " + year + ", percentage: " + percentage);
+    float value = Float.parseFloat(unemploymentDataStr[i]);
+    unemploymentData[i] = value;
   }
 }
 
+float[] suicideData;
+
+void InitializeSuicideData () {
+  
+   Table suicideTable = loadTable("suicide indicator age adjusted -05 extrapolated UL 2020100818b JAPAN.csv", "header");
+   String[] suicideDataStr = suicideTable.getStringColumn("Suicide, age adjusted, per 100 000 standard population");
+   suicideData = new float[suicideDataStr.length];
+   for (int i = 0; i < suicideData.length; i ++) {
+    
+     float value = Float.parseFloat(suicideDataStr[i]);
+     suicideData[i] = value;
+   }
+}
+
 void draw () {
-  //test change
+ 
 }
