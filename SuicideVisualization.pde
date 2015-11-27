@@ -1,10 +1,9 @@
-int[] years;
-
 void setup() {
   
   size(1280, 720);
   InitializeUnemploymentData();
   InitializeSuicideData();
+  InitializeYears();
 }
 
 float[] unemploymentData;
@@ -33,6 +32,20 @@ void InitializeSuicideData () {
      float value = Float.parseFloat(suicideDataStr[i]);
      suicideData[i] = value;
    }
+}
+
+int[] years;
+
+void InitializeYears () {
+  
+  Table suicideTable = loadTable("suicide indicator age adjusted -05 extrapolated UL 2020100818b JAPAN.csv", "header");
+  String[] yearsStr = suicideTable.getStringColumn("Year");
+  years = new int[yearsStr.length];
+  for (int i = 0; i < years.length; i ++) {
+    
+     int value = Integer.parseInt(yearsStr[i]);
+     years[i] = value;
+  }
 }
 
 void draw () {
