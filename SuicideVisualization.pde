@@ -38,7 +38,7 @@ void draw () {
   background(225);
   fill(255);
   drawTriangles();
-  update();
+  updateButton();
 }
 
 void drawTriangles () {
@@ -57,6 +57,7 @@ class dataTri {
   float unemployment;
   int suicidesInt;
   int unemploymentInt;
+  float randomRotation;
   
   dataTri (int year, float suicides, float unemployment) {  
     
@@ -66,6 +67,7 @@ class dataTri {
     suicidesInt = round(suicides);
     unemploymentInt = round(suicides);
     setInitialPosition(year);
+    randomRotation = random(0.0, 2.0 * PI);
   } 
   
   int initialX;
@@ -88,19 +90,23 @@ class dataTri {
     
     int xShift = (bottomValue/2) * bottomMultiplier;
     int yShift = (sideValue/2) * sideMultiplier;
-    int topLeftX = initialX - xShift;
-    int topLeftY = initialY - yShift;
+    int topLeftX = -xShift;
+    int topLeftY = -yShift;
     int bottomLeftX = topLeftX;
-    int bottomLeftY = initialY + yShift;
-    int bottomRightX = initialX + xShift;
+    int bottomLeftY = yShift;
+    int bottomRightX = xShift;
     int bottomRightY = bottomLeftY;
+    pushMatrix ();
+    translate (initialX, initialY);
+    rotate (randomRotation);
     triangle(topLeftX, topLeftY, bottomLeftX, bottomLeftY, bottomRightX, bottomRightY);
+    popMatrix ();
   }
 } 
 
 boolean overButton = false;
   
-void update() {
+void updateButton() {
   
   if(overButton == true) {
     fill(255);
