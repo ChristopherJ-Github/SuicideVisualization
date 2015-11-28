@@ -36,7 +36,9 @@ void setFirstAndLastYears (String[] yearsStr) {
 void draw () {
   
   background(225);
+  fill(255);
   drawTriangles();
+  update();
 }
 
 void drawTriangles () {
@@ -96,55 +98,41 @@ class dataTri {
   }
 } 
 
-class links{
-  boolean overButton = false;
+boolean overButton = false;
   
-  void update(){
-      if(overButton == true) {
-
+void update() {
+  
+  if(overButton == true) {
     fill(255);
-
   } else {
-
     noFill();
-
   }
-
-ellipse(50, 50, 75, 75);
-  }
+  ellipse(50, 50, 75, 75);
+}
   
-  void mousePressed() 
-
-{
-
+void mousePressed() {
+  
   if(overButton) { 
-
     link("http://www.economist.com/node/10329261");
-
   } 
-
 }
 
 void mouseMoved() { 
-
+  
   checkButtons(); 
-
 }
 
 void mouseDragged() {
-
+  
   checkButtons(); 
-
 }
 
 void checkButtons() {
 
   if(mouseX > 50 && mouseX < 125 &&
-
      mouseY > 50 && mouseY <125) {
-
     overButton = true;   
-
-  } 
-}
+  } else {
+    overButton = false;
+  }
 }
