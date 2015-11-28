@@ -47,7 +47,7 @@ void setMinimumAndMaximums () {
   for (int i = 0; i < dataTriangles.length; i ++) {
      
     dataTri dataTriangle = dataTriangles[i];
-    float suicides = dataTriangle.suicidesInt;
+    float suicides = dataTriangle.suicides;
     if (suicides < minSuicides) {
       minSuicides = suicides;
     }
@@ -55,7 +55,7 @@ void setMinimumAndMaximums () {
       maxSuicides = suicides;
     }
     
-    float unemployment = dataTriangle.unemploymentInt;
+    float unemployment = dataTriangle.unemployment;
     if (unemployment < minUnemployment) {
       minUnemployment = unemployment;
     }
@@ -93,8 +93,8 @@ void drawTriangles () {
   }
 }
 
-int minLength = 5;
-int maxLength = 40;
+int minLength = 10;
+int maxLength = 100;
 
 class dataTri { 
   
@@ -111,7 +111,7 @@ class dataTri {
     this.suicides = suicides;
     this.unemployment = unemployment;
     suicidesInt = round(suicides);
-    unemploymentInt = round(suicides);
+    unemploymentInt = round(unemployment);
     setInitialPosition(year);
     randomRotation = random(0.0, 2.0 * PI);
   } 
@@ -187,7 +187,7 @@ class dataTri {
     int bottomRightY = bottomLeftY;
     pushMatrix ();
     translate (initialX, initialY);
-    //rotate (randomRotation);
+    rotate (randomRotation);
     triangle(topLeftX, topLeftY, bottomLeftX, bottomLeftY, bottomRightX, bottomRightY);
     popMatrix ();
   }
