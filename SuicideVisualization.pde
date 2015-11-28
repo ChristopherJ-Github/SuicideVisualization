@@ -3,7 +3,6 @@ void setup() {
   size(1280, 720);
   surface.setResizable(true);
   initializeDataTriangles();
-  setMinimumAndMaximums();
 }
 
 dataTri[] dataTriangles;
@@ -15,7 +14,8 @@ void initializeDataTriangles () {
   String[] suicideDataStr = suicideTable.getStringColumn("Suicide, age adjusted, per 100 000 standard population");
   String[] unemploymentDataStr = unemploymentTable.getStringColumn("Total 15+ unemployment (%)");
   String[] yearsStr = suicideTable.getStringColumn("Year");
-  setFirstAndLastYears(yearsStr);
+  setMinimumAndMaximums(suicideDataStr, unemploymentDataStr);
+  setFirstAndLastYears(yearsStr); 
   dataTriangles = new dataTri[yearsStr.length];
   for (int i = 0; i < dataTriangles.length; i ++) {
      
@@ -27,27 +27,18 @@ void initializeDataTriangles () {
   }
 }
 
-int firstYear, lastYear;
-
-void setFirstAndLastYears (String[] yearsStr) {
-  
-  firstYear = Integer.parseInt(yearsStr[0]);
-  lastYear = Integer.parseInt(yearsStr[yearsStr.length - 1]);
-}
-
 float minSuicides, maxSuicides;
 float minUnemployment, maxUnemployment;
 
-void setMinimumAndMaximums () {
+void setMinimumAndMaximums (String[] suicideDataStr, String[] unemploymentDataStr) {
   
   minSuicides = 100000000;
   maxSuicides = 0;
   minUnemployment = 100000000;
   maxUnemployment = 0;
-  for (int i = 0; i < dataTriangles.length; i ++) {
+  for (int i = 0; i < suicideDataStr.length; i ++) {
      
-    dataTri dataTriangle = dataTriangles[i];
-    float suicides = dataTriangle.suicides;
+    float suicides = Float.parseFloat(suicideDataStr[i]);
     if (suicides < minSuicides) {
       minSuicides = suicides;
     }
@@ -55,7 +46,7 @@ void setMinimumAndMaximums () {
       maxSuicides = suicides;
     }
     
-    float unemployment = dataTriangle.unemployment;
+    float unemployment = Float.parseFloat(unemploymentDataStr[i]);
     if (unemployment < minUnemployment) {
       minUnemployment = unemployment;
     }
@@ -63,6 +54,14 @@ void setMinimumAndMaximums () {
       maxUnemployment = unemployment;
     }
   }
+}
+
+int firstYear, lastYear;
+
+void setFirstAndLastYears (String[] yearsStr) {
+  
+  firstYear = Integer.parseInt(yearsStr[0]);
+  lastYear = Integer.parseInt(yearsStr[yearsStr.length - 1]);
 }
 
 void draw () {
@@ -114,7 +113,21 @@ class dataTri {
     unemploymentInt = round(unemployment);
     setInitialPosition(year);
     randomRotation = random(0.0, 2.0 * PI);
+    setLengths();
   } 
+  
+  int suicideLength, unemploymentLength;
+  int longestLength;
+  void setLengths () {
+    
+    suicideLength = round(map(suicides, minSuicides, maxSuicides, minLength, maxLength));
+    unemploymentLength = round(map(unemployment, minUnemployment, maxUnemployment, minLength, maxLength));
+    if (suicideLength > unemploymentLength) {
+      longestLength = suicideLength;
+    } else {
+      longestLength = unemploymentLength;
+    }
+  }
   
   int initialX;
   int initialY;
@@ -131,7 +144,7 @@ class dataTri {
   void checkIfHighlighted () {
     
      // * 4 should be replaced with the largest multiplier
-     boolean highlighted = overCircle(initialX, initialY, unemploymentInt * 4);
+     boolean highlighted = overCircle(initialX, initialY, longestLength);
      if (highlighted) {
        highlightedTri = this;
      } 
@@ -155,8 +168,6 @@ class dataTri {
       highlighted = true;
     }
     setColor (highlighted);
-    int suicideLength = round(map(suicides, minSuicides, maxSuicides, minLength, maxLength));
-    int unemploymentLength = round(map(unemployment, minUnemployment, maxUnemployment, minLength, maxLength));
     placeTriangle (suicideLength, unemploymentLength);
     fill(255); //reset color
   }
