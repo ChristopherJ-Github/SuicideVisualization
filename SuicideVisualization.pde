@@ -95,3 +95,61 @@ class dataTri {
     triangle(topLeftX, topLeftY, bottomLeftX, bottomLeftY, bottomRightX, bottomRightY);
   }
 } 
+
+class links{
+  boolean overButton = false;
+  
+  void update(){
+      if(overButton == true) {
+
+    fill(255);
+
+  } else {
+
+    noFill();
+
+  }
+
+ellipse(height/2, width/2, 75, 75);
+  }
+  
+  void mousePressed() 
+
+{
+
+  if(overButton) { 
+
+    link("http://www.economist.com/node/10329261");
+
+  } 
+
+}
+
+
+void mouseMoved() { 
+
+  checkButtons(); 
+
+}
+
+  
+void mouseDragged() {
+
+  checkButtons(); 
+
+}
+
+
+void checkButtons() {
+
+  if(mouseX > 20 && mouseX < 95 &&
+
+     mouseY > 60 && mouseY <135) {
+
+    overButton = true;   
+
+  } 
+
+
+}
+}
