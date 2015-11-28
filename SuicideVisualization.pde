@@ -110,7 +110,7 @@ class links{
 
   }
 
-ellipse(height/2, width/2, 75, 75);
+ellipse(50, 50, 75, 75);
   }
   
   void mousePressed() 
@@ -139,9 +139,9 @@ void mouseDragged() {
 
 void checkButtons() {
 
-  if(mouseX > 20 && mouseX < 95 &&
+  if(mouseX > 50 && mouseX < 125 &&
 
-     mouseY > 60 && mouseY <135) {
+     mouseY > 50 && mouseY <125) {
 
     overButton = true;   
 
