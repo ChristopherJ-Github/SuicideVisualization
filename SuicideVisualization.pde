@@ -3,6 +3,7 @@ void setup() {
   size(1280, 720);
   surface.setResizable(true);
   initializeDataTriangles();
+  setMinimumAndMaximums();
 }
 
 dataTri[] dataTriangles;
@@ -34,6 +35,36 @@ void setFirstAndLastYears (String[] yearsStr) {
   lastYear = Integer.parseInt(yearsStr[yearsStr.length - 1]);
 }
 
+float minSuicides, maxSuicides;
+float minUnemployment, maxUnemployment;
+
+void setMinimumAndMaximums () {
+  
+  minSuicides = 100000000;
+  maxSuicides = 0;
+  minUnemployment = 100000000;
+  maxUnemployment = 0;
+  for (int i = 0; i < dataTriangles.length; i ++) {
+     
+    dataTri dataTriangle = dataTriangles[i];
+    float suicides = dataTriangle.suicidesInt;
+    if (suicides < minSuicides) {
+      minSuicides = suicides;
+    }
+    if (suicides > maxSuicides) {
+      maxSuicides = suicides;
+    }
+    
+    float unemployment = dataTriangle.unemploymentInt;
+    if (unemployment < minUnemployment) {
+      minUnemployment = unemployment;
+    }
+    if (unemployment > maxUnemployment) {
+      maxUnemployment = unemployment;
+    }
+  }
+}
+
 void draw () {
   
   background(225);
@@ -61,6 +92,9 @@ void drawTriangles () {
     dataTriangle.drawTriangle();
   }
 }
+
+int minLength = 5;
+int maxLength = 40;
 
 class dataTri { 
   
@@ -96,6 +130,7 @@ class dataTri {
   
   void checkIfHighlighted () {
     
+     // * 4 should be replaced with the largest multiplier
      boolean highlighted = overCircle(initialX, initialY, unemploymentInt * 4);
      if (highlighted) {
        highlightedTri = this;
@@ -120,7 +155,9 @@ class dataTri {
       highlighted = true;
     }
     setColor (highlighted);
-    placeTriangle (suicidesInt, unemploymentInt, 4, 4);
+    int suicideLength = round(map(suicides, minSuicides, maxSuicides, minLength, maxLength));
+    int unemploymentLength = round(map(unemployment, minUnemployment, maxUnemployment, minLength, maxLength));
+    placeTriangle (suicideLength, unemploymentLength);
     fill(255); //reset color
   }
   
@@ -138,10 +175,10 @@ class dataTri {
   
   //this creates a right angle triangle where the right angle is on the bottom left
   //with two points on the bottom and one on the top left
-  void placeTriangle (int sideValue, int bottomValue, int sideMultiplier, int bottomMultiplier) {
+  void placeTriangle (int bottomLength, int sideLength) {
     
-    int xShift = (bottomValue/2) * bottomMultiplier;
-    int yShift = (sideValue/2) * sideMultiplier;
+    int xShift = bottomLength/2;
+    int yShift = sideLength/2;
     int topLeftX = -xShift;
     int topLeftY = -yShift;
     int bottomLeftX = topLeftX;
@@ -150,7 +187,7 @@ class dataTri {
     int bottomRightY = bottomLeftY;
     pushMatrix ();
     translate (initialX, initialY);
-    rotate (randomRotation);
+    //rotate (randomRotation);
     triangle(topLeftX, topLeftY, bottomLeftX, bottomLeftY, bottomRightX, bottomRightY);
     popMatrix ();
   }
