@@ -1,6 +1,7 @@
 void setup() {
   
   size(1280, 720);
+  surface.setResizable(true);
   initializeDataTriangles();
 }
 
@@ -41,12 +42,23 @@ void draw () {
   updateButton();
 }
 
+dataTri highlightedTri;
+
 void drawTriangles () {
   
+  highlightedTri = null;
+  //first update the transformations and check which is highlighted
   for (int i = 0; i < dataTriangles.length; i ++) {
      
     dataTri dataTriangle = dataTriangles[i];
-    dataTriangle.update();
+    dataTriangle.updateTransformations();
+    dataTriangle.checkIfHighlighted();
+  }
+  //after that draw all the triangles 
+  for (int i = 0; i < dataTriangles.length; i ++) {
+     
+    dataTri dataTriangle = dataTriangles[i];
+    dataTriangle.drawTriangle();
   }
 }
 
@@ -79,9 +91,49 @@ class dataTri {
     initialY = height/2;
   }
   
-  void update() { 
+  void updateTransformations () {
+  }
+  
+  void checkIfHighlighted () {
     
-    placeTriangle(suicidesInt, unemploymentInt, 4, 4);
+     boolean highlighted = overCircle(initialX, initialY, unemploymentInt * 4);
+     if (highlighted) {
+       highlightedTri = this;
+     } 
+  }
+  
+  boolean overCircle(int x, int y, int diameter) {
+    
+    float disX = x - mouseX;
+    float disY = y - mouseY;
+    if(sqrt(sq(disX) + sq(disY)) < diameter/2 ) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  
+  void drawTriangle () {
+    
+    boolean highlighted = false;
+    if (highlightedTri == this) {
+      highlighted = true;
+    }
+    setColor (highlighted);
+    placeTriangle (suicidesInt, unemploymentInt, 4, 4);
+    fill(255); //reset color
+  }
+  
+  void setColor (boolean highlighted) {
+    
+    color col;
+    if (highlighted) {
+      col = color (255, 0, 0, 255);
+    } else {
+      col = color (255, 0, 0, 100);
+    }
+    fill(col);
+    noStroke();
   }
   
   //this creates a right angle triangle where the right angle is on the bottom left
