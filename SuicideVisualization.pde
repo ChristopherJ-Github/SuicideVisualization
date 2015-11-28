@@ -77,15 +77,15 @@ class dataTri {
   
   void update() { 
     
-    placeTriangle(suicidesInt, unemploymentInt);
+    placeTriangle(suicidesInt, unemploymentInt, 4, 4);
   }
   
   //this creates a right angle triangle where the right angle is on the bottom left
   //with two points on the bottom and one on the top left
-  void placeTriangle (int sideValue, int bottomValue) {
+  void placeTriangle (int sideValue, int bottomValue, int sideMultiplier, int bottomMultiplier) {
     
-    int xShift = bottomValue/2;
-    int yShift = sideValue/2;
+    int xShift = (bottomValue/2) * bottomMultiplier;
+    int yShift = (sideValue/2) * sideMultiplier;
     int topLeftX = initialX - xShift;
     int topLeftY = initialY - yShift;
     int bottomLeftX = topLeftX;
