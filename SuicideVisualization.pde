@@ -53,26 +53,45 @@ class dataTri {
   int year;
   float suicides;
   float unemployment;
+  int suicidesInt;
+  int unemploymentInt;
   
   dataTri (int year, float suicides, float unemployment) {  
     
     this.year = year;
     this.suicides = suicides;
     this.unemployment = unemployment;
+    suicidesInt = round(suicides);
+    unemploymentInt = round(suicides);
     setInitialPosition(year);
   } 
   
-  PVector initialPosition;
+  int initialX;
+  int initialY;
   
   void setInitialPosition (int year) {
     
-    int x = round(map(year, firstYear, lastYear, 0, width)); 
-    int y = height/2;
-    initialPosition = new PVector(x, y);
+    initialX = round(map(year, firstYear, lastYear, 0, width)); 
+    initialY = height/2;
   }
   
   void update() { 
     
-    ellipse(initialPosition.x, initialPosition.y, 55, 55);
-  } 
+    placeTriangle(suicidesInt, unemploymentInt);
+  }
+  
+  //this creates a right angle triangle where the right angle is on the bottom left
+  //with two points on the bottom and one on the top left
+  void placeTriangle (int sideValue, int bottomValue) {
+    
+    int xShift = bottomValue/2;
+    int yShift = sideValue/2;
+    int topLeftX = initialX - xShift;
+    int topLeftY = initialY - yShift;
+    int bottomLeftX = topLeftX;
+    int bottomLeftY = initialY + yShift;
+    int bottomRightX = initialX + xShift;
+    int bottomRightY = bottomLeftY;
+    triangle(topLeftX, topLeftY, bottomLeftX, bottomLeftY, bottomRightX, bottomRightY);
+  }
 } 
