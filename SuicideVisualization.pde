@@ -3,7 +3,7 @@ void setup() {
   size(1280, 720);
   InitializeDataTriangles ();
 }
-
+//waddup
 DataTri[] dataTriangles;
 
 void InitializeDataTriangles () {
