@@ -1,7 +1,8 @@
 void setup() {
   
   size(1280, 720);
-  initializeDataTriangles ();
+  initializeDataTriangles();
+  setFirstAndLastYears();
 }
 
 dataTri[] dataTriangles;
@@ -24,6 +25,14 @@ void initializeDataTriangles () {
   }
 }
 
+int firstYear, lastYear;
+
+void setFirstAndLastYears () {
+  
+  firstYear = dataTriangles[0].year;
+  lastYear = dataTriangles[dataTriangles.length - 1].year;
+}
+
 void draw () {
  
 }
@@ -33,6 +42,7 @@ class dataTri {
   int year;
   float suicides;
   float unemployment;
+  
   dataTri (int year, float suicides, float unemployment) {  
     
     this.year = year;
@@ -40,7 +50,13 @@ class dataTri {
     this.unemployment = unemployment;
   } 
   
-  void SetPosition () {
+  PVector initialPosition;
+  
+  void setInitialPosition (int year) {
+    
+    int x = round(map(year, firstYear, lastYear, 0, width)); 
+    int y = height/2;
+    initialPosition = new PVector(x, y);
   }
   
   void update() { 
