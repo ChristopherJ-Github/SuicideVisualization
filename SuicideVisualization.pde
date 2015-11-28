@@ -125,20 +125,17 @@ ellipse(height/2, width/2, 75, 75);
 
 }
 
-
 void mouseMoved() { 
 
   checkButtons(); 
 
 }
 
-  
 void mouseDragged() {
 
   checkButtons(); 
 
 }
-
 
 void checkButtons() {
 
@@ -149,7 +146,5 @@ void checkButtons() {
     overButton = true;   
 
   } 
-
-
 }
 }
