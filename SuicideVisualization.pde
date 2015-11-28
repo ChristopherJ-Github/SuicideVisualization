@@ -1,53 +1,46 @@
 void setup() {
   
   size(1280, 720);
-  InitializeUnemploymentData();
-  InitializeSuicideData();
-  InitializeYears();
+  InitializeDataTriangles ();
 }
 
-float[] unemploymentData;
+DataTri[] dataTriangles;
 
-void InitializeUnemploymentData () {
-  
-  Table unemploymentTable = loadTable("indicator_t above 15 unemploy JAPAN.csv", "header");
-  String[] unemploymentDataStr = unemploymentTable.getStringColumn("Total 15+ unemployment (%)");
-  unemploymentData = new float[unemploymentDataStr.length];
-  for (int i = 0; i < unemploymentData.length; i ++) {
-    
-    float value = Float.parseFloat(unemploymentDataStr[i]);
-    unemploymentData[i] = value;
-  }
-}
-
-float[] suicideData;
-
-void InitializeSuicideData () {
-  
-   Table suicideTable = loadTable("suicide indicator age adjusted -05 extrapolated UL 2020100818b JAPAN.csv", "header");
-   String[] suicideDataStr = suicideTable.getStringColumn("Suicide, age adjusted, per 100 000 standard population");
-   suicideData = new float[suicideDataStr.length];
-   for (int i = 0; i < suicideData.length; i ++) {
-    
-     float value = Float.parseFloat(suicideDataStr[i]);
-     suicideData[i] = value;
-   }
-}
-
-int[] years;
-
-void InitializeYears () {
+void InitializeDataTriangles () {
   
   Table suicideTable = loadTable("suicide indicator age adjusted -05 extrapolated UL 2020100818b JAPAN.csv", "header");
+  Table unemploymentTable = loadTable("indicator_t above 15 unemploy JAPAN.csv", "header");
+  String[] suicideDataStr = suicideTable.getStringColumn("Suicide, age adjusted, per 100 000 standard population");
+  String[] unemploymentDataStr = unemploymentTable.getStringColumn("Total 15+ unemployment (%)");
   String[] yearsStr = suicideTable.getStringColumn("Year");
-  years = new int[yearsStr.length];
-  for (int i = 0; i < years.length; i ++) {
-    
-     int value = Integer.parseInt(yearsStr[i]);
-     years[i] = value;
+  dataTriangles = new DataTri[yearsStr.length];
+  for (int i = 0; i < dataTriangles.length; i ++) {
+     
+    float unemployment = Float.parseFloat(unemploymentDataStr[i]);
+    float suicides = Float.parseFloat(suicideDataStr[i]);
+    int year = Integer.parseInt(yearsStr[i]);
+    DataTri dataTri = new DataTri(year, suicides, unemployment);
+    dataTriangles[i] = dataTri;
   }
 }
 
 void draw () {
  
 }
+
+class DataTri { 
+  
+  int year;
+  float suicides;
+  float unemployment;
+  DataTri (int year, float suicides, float unemployment) {  
+    
+    this.year = year;
+    this.suicides = suicides;
+    this.unemployment = unemployment;
+  } 
+  
+  void update() { 
+    
+  } 
+} 
