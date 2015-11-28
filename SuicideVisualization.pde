@@ -2,7 +2,6 @@ void setup() {
   
   size(1280, 720);
   initializeDataTriangles();
-  setFirstAndLastYears();
 }
 
 dataTri[] dataTriangles;
@@ -14,6 +13,7 @@ void initializeDataTriangles () {
   String[] suicideDataStr = suicideTable.getStringColumn("Suicide, age adjusted, per 100 000 standard population");
   String[] unemploymentDataStr = unemploymentTable.getStringColumn("Total 15+ unemployment (%)");
   String[] yearsStr = suicideTable.getStringColumn("Year");
+  setFirstAndLastYears(yearsStr);
   dataTriangles = new dataTri[yearsStr.length];
   for (int i = 0; i < dataTriangles.length; i ++) {
      
@@ -27,14 +27,25 @@ void initializeDataTriangles () {
 
 int firstYear, lastYear;
 
-void setFirstAndLastYears () {
+void setFirstAndLastYears (String[] yearsStr) {
   
-  firstYear = dataTriangles[0].year;
-  lastYear = dataTriangles[dataTriangles.length - 1].year;
+  firstYear = Integer.parseInt(yearsStr[0]);
+  lastYear = Integer.parseInt(yearsStr[yearsStr.length - 1]);
 }
 
 void draw () {
- 
+  
+  background(225);
+  drawTriangles();
+}
+
+void drawTriangles () {
+  
+  for (int i = 0; i < dataTriangles.length; i ++) {
+     
+    dataTri dataTriangle = dataTriangles[i];
+    dataTriangle.update();
+  }
 }
 
 class dataTri { 
@@ -48,6 +59,7 @@ class dataTri {
     this.year = year;
     this.suicides = suicides;
     this.unemployment = unemployment;
+    setInitialPosition(year);
   } 
   
   PVector initialPosition;
@@ -61,5 +73,6 @@ class dataTri {
   
   void update() { 
     
+    ellipse(initialPosition.x, initialPosition.y, 55, 55);
   } 
 } 
