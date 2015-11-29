@@ -102,7 +102,7 @@ void drawTriangles () {
 int minLength = 10;
 int maxLength = 100;
 float amplitude = 20.0;
-float frequency = ((2 * PI)/1.08);
+float frequency = ((2 * PI)/1.02); //to accuratley change, just edit the 2nd decimal place in the divisor
 
 class dataTri { 
   
@@ -143,11 +143,15 @@ class dataTri {
   
   void setInitialPosition (int year) {
     
-    initialX = round(map(year, firstYear, lastYear, 0, width)); 
+    int padding = 50; //padding affects the sin wave's frequency
+    initialX = round(map(year, firstYear, lastYear, padding, width - padding)); 
     initialY = height/2;
   }
   
   void updateTransformations () {
+    
+    currentPositionX = initialX;
+    currentPositionY = initialY + (amplitude*sin((initialX + timePassed) * frequency));
   }
   
   void checkIfHighlighted () {
@@ -208,8 +212,6 @@ class dataTri {
     int bottomRightX = xShift;
     int bottomRightY = bottomLeftY;
     pushMatrix ();
-    currentPositionX = initialX;
-    currentPositionY = initialY + (amplitude*sin((initialX + timePassed) * frequency));
     translate (currentPositionX, currentPositionY);
     rotate (randomRotation);
     triangle(topLeftX, topLeftY, bottomLeftX, bottomLeftY, bottomRightX, bottomRightY);
