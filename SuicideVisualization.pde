@@ -1,5 +1,11 @@
+PImage cool;
+float t = 0.0;
+float dt = 0.5; 
+float amplitude = 100.0;
+float frequency = 0.5;
 void setup() {
-  
+   cool = loadImage("japan.jpg");
+  frameRate(20);
   size(1280, 720);
   surface.setResizable(true);
   initializeDataTriangles();
@@ -66,7 +72,7 @@ void setFirstAndLastYears (String[] yearsStr) {
 
 void draw () {
   
-  background(225);
+  image(cool,displayWidth/1000,displayHeight/1000,width, height);
   fill(255);
   drawTriangles();
   updateButton();
@@ -186,7 +192,7 @@ class dataTri {
   //this creates a right angle triangle where the right angle is on the bottom left
   //with two points on the bottom and one on the top left
   void placeTriangle (int bottomLength, int sideLength) {
-    
+
     int xShift = bottomLength/2;
     int yShift = sideLength/2;
     int topLeftX = -xShift;
@@ -196,10 +202,18 @@ class dataTri {
     int bottomRightX = xShift;
     int bottomRightY = bottomLeftY;
     pushMatrix ();
-    translate (initialX, initialY);
+
+    translate (initialX ,initialY + amplitude*sin(frequency*(t)));
+  t +=dt;
+  
     rotate (randomRotation);
     triangle(topLeftX, topLeftY, bottomLeftX, bottomLeftY, bottomRightX, bottomRightY);
     popMatrix ();
+ 
+  }
+  
+  void update(){
+    
   }
 } 
 
