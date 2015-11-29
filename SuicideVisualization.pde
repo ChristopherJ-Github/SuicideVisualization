@@ -1,8 +1,10 @@
+PImage cool;
 float t = 0.0;
 float dt = 0.5; 
 float amplitude = 100.0;
 float frequency = 0.5;
 void setup() {
+   cool = loadImage("japan.jpg");
   frameRate(20);
   size(1280, 720);
   surface.setResizable(true);
@@ -70,7 +72,7 @@ void setFirstAndLastYears (String[] yearsStr) {
 
 void draw () {
   
-  background(225);
+  image(cool,displayWidth/1000,displayHeight/1000,width, height);
   fill(255);
   drawTriangles();
   updateButton();
