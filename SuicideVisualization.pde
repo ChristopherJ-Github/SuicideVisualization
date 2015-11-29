@@ -143,7 +143,6 @@ class dataTri {
   
   void checkIfHighlighted () {
     
-     // * 4 should be replaced with the largest multiplier
      boolean highlighted = overCircle(initialX, initialY, longestLength);
      if (highlighted) {
        highlightedTri = this;
