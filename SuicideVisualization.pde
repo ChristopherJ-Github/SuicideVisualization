@@ -84,8 +84,9 @@ void draw () {
   float xShift = (width * (1.0/4.0)) + padding;
   float articleWidth = width - xShift - padding;
   float articleHeight = 1000;
-  text(articleText, xShift, yShift, articleWidth, articleHeight);
+  textSize(13);
   fill(255);
+  text(articleText, xShift, yShift, articleWidth, articleHeight);
   drawTriangles();
   updateButton(); 
 }
@@ -221,15 +222,40 @@ class dataTri {
   
   void drawDetailedTriangle (int bottomLength, int sideLength) {
     
+    int fontSize = 20;
+    int padding = 10;
     float minLargeLength = 10;
-    float maxLargeLength = (width * (1.0/4.0));
-    float topLeftX = 10;
-    float topLeftY = height - (10 + map(sideLength, minLength, maxLength, minLargeLength, maxLargeLength));
-    float bottomLeftX = 10;
-    float bottomLeftY = height - 10;
+    float maxLargeLength = (width * (1.0/4.0)) - (padding + fontSize);
+    float topLeftX = padding + fontSize;
+    float topLeftY = height - (padding + fontSize + map(sideLength, minLength, maxLength, minLargeLength, maxLargeLength));
+    float bottomLeftX = topLeftX;
+    float bottomLeftY = height - (padding + fontSize);
     float bottomRightX = map(bottomLength, minLength, maxLength, minLargeLength, maxLargeLength);
     float bottomRightY = bottomLeftY;
+    fill(255, 255, 255, 150);
     triangle(topLeftX, topLeftY, bottomLeftX, bottomLeftY, bottomRightX, bottomRightY);
+    drawText (padding, fontSize);
+  }
+  
+  void drawText (int padding, int fontSize) {
+    
+    textSize(fontSize);
+    fill(255, 255, 255, 255);
+    
+    pushMatrix();
+    textAlign (BOTTOM, RIGHT);
+    translate(fontSize, height - (padding + fontSize));
+    rotate(-PI/2);
+    String title = unemployment + " % Unemployment";
+    text(title, 0, 0);
+    popMatrix();
+    
+    pushMatrix();
+    textAlign (BOTTOM, LEFT);
+    translate(fontSize, height);
+    title = suicidesInt + " Suicides Per 100,000";
+    text(title, 0, 0);
+    popMatrix();
   }
   
   void setColor (boolean highlighted) {
