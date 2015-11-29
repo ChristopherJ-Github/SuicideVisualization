@@ -4,8 +4,9 @@ float dt = 0.5;
 float amplitude = 100.0;
 float frequency = 0.5;
 void setup() {
-   cool = loadImage("japan.jpg");
-  frameRate(20);
+  
+  cool = loadImage("japan.jpg");
+  //frameRate(60);
   size(1280, 720);
   surface.setResizable(true);
   initializeDataTriangles();
@@ -149,7 +150,7 @@ class dataTri {
   
   void checkIfHighlighted () {
     
-     boolean highlighted = overCircle(initialX, initialY, longestLength);
+     boolean highlighted = overCircle(currentPositionX, currentPositionY, longestLength);
      if (highlighted) {
        highlightedTri = this;
      } 
@@ -189,6 +190,9 @@ class dataTri {
     noStroke();
   }
   
+  int currentPositionX;
+  int currentPositionY;
+  
   //this creates a right angle triangle where the right angle is on the bottom left
   //with two points on the bottom and one on the top left
   void placeTriangle (int bottomLength, int sideLength) {
@@ -202,10 +206,10 @@ class dataTri {
     int bottomRightX = xShift;
     int bottomRightY = bottomLeftY;
     pushMatrix ();
-
-    translate (initialX ,initialY + amplitude*sin(frequency*(t)));
-  t +=dt;
-  
+    currentPositionX = initialX;
+    currentPositionY = round(initialY + amplitude*sin(frequency*(t)));
+    t +=dt;
+    translate (currentPositionX, currentPositionY);
     rotate (randomRotation);
     triangle(topLeftX, topLeftY, bottomLeftX, bottomLeftY, bottomRightX, bottomRightY);
     popMatrix ();
