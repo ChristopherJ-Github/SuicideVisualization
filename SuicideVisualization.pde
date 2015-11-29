@@ -1,4 +1,6 @@
 PImage cool;
+String articleText = "";
+String state;
 
 void setup() {
   
@@ -7,6 +9,12 @@ void setup() {
   size(1280, 720);
   surface.setResizable(true);
   initializeDataTriangles();
+  String[] lines = loadStrings("textTest.txt");
+  for (int i = 0 ; i < lines.length; i++) {
+    articleText += lines[i];
+    articleText += "\n";
+  }
+  state = "default";
 }
 
 dataTri[] dataTriangles;
@@ -70,10 +78,16 @@ void setFirstAndLastYears (String[] yearsStr) {
 
 void draw () {
   
-  image(cool,displayWidth/1000,displayHeight/1000,width, height);
+  image(cool, 0, 0, width, height);
+  float padding = 10;
+  float yShift = (height/2) + padding;
+  float xShift = (width * (1.0/4.0)) + padding;
+  float articleWidth = width - xShift - padding;
+  float articleHeight = 1000;
+  text(articleText, xShift, yShift, articleWidth, articleHeight);
   fill(255);
   drawTriangles();
-  updateButton();
+  updateButton(); 
 }
 
 float timePassed = 0.0;
@@ -183,13 +197,39 @@ class dataTri {
   
   void drawTriangle () {
     
+    int bottomLength = suicideLength;
+    int sideLength = unemploymentLength;
     boolean highlighted = false;
     if (highlightedTri == this) {
       highlighted = true;
+      checkIfClicked(bottomLength, sideLength);
     }
     setColor (highlighted);
-    placeTriangle (suicideLength, unemploymentLength);
+    placeTriangle (bottomLength, sideLength);
     fill(255); //reset color
+  }
+  
+  void checkIfClicked (int bottomLength, int sideLength) {
+    
+    if (mousePressed && state == "default") {
+      state = "clicked";
+    }
+    if (state == "clicked") {
+      drawDetailedTriangle (bottomLength, sideLength);
+    }
+  }
+  
+  void drawDetailedTriangle (int bottomLength, int sideLength) {
+    
+    float minLargeLength = 10;
+    float maxLargeLength = (width * (1.0/4.0));
+    float topLeftX = 10;
+    float topLeftY = height - (10 + map(sideLength, minLength, maxLength, minLargeLength, maxLargeLength));
+    float bottomLeftX = 10;
+    float bottomLeftY = height - 10;
+    float bottomRightX = map(bottomLength, minLength, maxLength, minLargeLength, maxLargeLength);
+    float bottomRightY = bottomLeftY;
+    triangle(topLeftX, topLeftY, bottomLeftX, bottomLeftY, bottomRightX, bottomRightY);
   }
   
   void setColor (boolean highlighted) {
