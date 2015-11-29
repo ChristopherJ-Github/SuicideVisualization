@@ -1,12 +1,9 @@
 PImage cool;
-float t = 0.0;
-float dt = 0.5; 
-float amplitude = 100.0;
-float frequency = 0.5;
+
 void setup() {
   
   cool = loadImage("japan.jpg");
-  //frameRate(60);
+  frameRate(60);
   size(1280, 720);
   surface.setResizable(true);
   initializeDataTriangles();
@@ -101,6 +98,10 @@ void drawTriangles () {
 
 int minLength = 10;
 int maxLength = 100;
+float timePassed = 0.0;
+float dt = 0.5; 
+float amplitude = 100.0;
+float frequency = 0.5;
 
 class dataTri { 
   
@@ -207,8 +208,8 @@ class dataTri {
     int bottomRightY = bottomLeftY;
     pushMatrix ();
     currentPositionX = initialX;
-    currentPositionY = round(initialY + amplitude*sin(frequency*(t)));
-    t +=dt;
+    currentPositionY = round(initialY + amplitude*sin(frequency*timePassed));
+    timePassed += dt;
     translate (currentPositionX, currentPositionY);
     rotate (randomRotation);
     triangle(topLeftX, topLeftY, bottomLeftX, bottomLeftY, bottomRightX, bottomRightY);
