@@ -100,8 +100,8 @@ void drawTriangles () {
 int minLength = 10;
 int maxLength = 100;
 float timePassed = 0.0;
-float dt = 0.01; 
-float amplitude = 10.0;
+float dt = 0.005; 
+float amplitude = 20.0;
 float frequency = ((2 * PI)/1.08);
 
 class dataTri { 
@@ -152,7 +152,7 @@ class dataTri {
   
   void checkIfHighlighted () {
     
-     boolean highlighted = overCircle(currentPositionX, currentPositionY, longestLength);
+     boolean highlighted = overCircle(round(currentPositionX), round(currentPositionY), longestLength);
      if (highlighted) {
        highlightedTri = this;
      } 
@@ -192,8 +192,8 @@ class dataTri {
     noStroke();
   }
   
-  int currentPositionX;
-  int currentPositionY;
+  float currentPositionX;
+  float currentPositionY;
   
   //this creates a right angle triangle where the right angle is on the bottom left
   //with two points on the bottom and one on the top left
@@ -209,7 +209,7 @@ class dataTri {
     int bottomRightY = bottomLeftY;
     pushMatrix ();
     currentPositionX = initialX;
-    currentPositionY = round(initialY + (amplitude*sin((initialX + timePassed) * frequency)));
+    currentPositionY = initialY + (amplitude*sin((initialX + timePassed) * frequency));
     translate (currentPositionX, currentPositionY);
     rotate (randomRotation);
     triangle(topLeftX, topLeftY, bottomLeftX, bottomLeftY, bottomRightX, bottomRightY);
