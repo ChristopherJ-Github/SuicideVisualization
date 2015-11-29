@@ -77,12 +77,20 @@ void draw () {
 }
 
 float timePassed = 0.0;
-float dt = 0.005; 
+float waveSpeed = 0.005;
+float waveHighlightedSpeed = 0.001;
 dataTri highlightedTri;
 
 void drawTriangles () {
   
-  timePassed += dt;
+  //this is based off of the last highlighted object so it's
+  //not entirely accurate
+  if (highlightedTri != null) {  
+    timePassed += waveHighlightedSpeed;
+  } else {
+    timePassed += waveSpeed;
+  }
+  
   highlightedTri = null;
   //first update the transformations and check which is highlighted
   for (int i = 0; i < dataTriangles.length; i ++) {
