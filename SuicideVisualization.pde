@@ -80,6 +80,7 @@ dataTri highlightedTri;
 
 void drawTriangles () {
   
+  timePassed += dt;
   highlightedTri = null;
   //first update the transformations and check which is highlighted
   for (int i = 0; i < dataTriangles.length; i ++) {
@@ -99,9 +100,9 @@ void drawTriangles () {
 int minLength = 10;
 int maxLength = 100;
 float timePassed = 0.0;
-float dt = 0.5; 
-float amplitude = 100.0;
-float frequency = 0.5;
+float dt = 0.01; 
+float amplitude = 10.0;
+float frequency = ((2 * PI)/1.08);
 
 class dataTri { 
   
@@ -208,8 +209,7 @@ class dataTri {
     int bottomRightY = bottomLeftY;
     pushMatrix ();
     currentPositionX = initialX;
-    currentPositionY = round(initialY + amplitude*sin(frequency*timePassed));
-    timePassed += dt;
+    currentPositionY = round(initialY + (amplitude*sin((initialX + timePassed) * frequency)));
     translate (currentPositionX, currentPositionY);
     rotate (randomRotation);
     triangle(topLeftX, topLeftY, bottomLeftX, bottomLeftY, bottomRightX, bottomRightY);
