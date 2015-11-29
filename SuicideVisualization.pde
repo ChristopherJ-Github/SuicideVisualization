@@ -76,6 +76,8 @@ void draw () {
   updateButton();
 }
 
+float timePassed = 0.0;
+float dt = 0.005; 
 dataTri highlightedTri;
 
 void drawTriangles () {
@@ -99,8 +101,6 @@ void drawTriangles () {
 
 int minLength = 10;
 int maxLength = 100;
-float timePassed = 0.0;
-float dt = 0.005; 
 float amplitude = 20.0;
 float frequency = ((2 * PI)/1.08);
 
