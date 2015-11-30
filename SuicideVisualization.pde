@@ -87,7 +87,7 @@ void drawTriangles () {
   
   //this is based off of the last highlighted object so it's
   //not entirely accurate
-  if (highlightedTri != null) {  
+  if (highlightedTri != null || state == "clicked") {  
     timePassed += waveHighlightedSpeed;
   } else {
     timePassed += waveSpeed;
