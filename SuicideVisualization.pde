@@ -3,7 +3,7 @@ String state;
 
 void setup() {
   
-  cool = loadImage("japan.jpg");
+  cool = loadImage("japanGrey.jpg");
   frameRate(60);
   size(1280, 720);
   surface.setResizable(true);
