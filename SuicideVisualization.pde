@@ -109,7 +109,7 @@ void drawTriangles () {
   }
 }
 
-void mousePressed () {
+void keyPressed () {
   
   checkForDeselect ();
   updateClickShift ();
@@ -119,6 +119,7 @@ void checkForDeselect () {
   
   if (highlightedTri == null && state == "clicked") {
     state = "default";
+    clickedTri = null;
   }
 }
 
@@ -248,6 +249,7 @@ class dataTri {
     }
     setColor (highlighted);
     placeTriangle (bottomLength, sideLength);
+    drawYear(highlighted);
     fill(255); //reset color
   }
   
@@ -273,7 +275,7 @@ class dataTri {
     float bottomLeftY = height - (padding + fontSize);
     float bottomRightX = map(bottomLength, minLength, maxLength, minLargeLength, maxLargeLength) + padding + fontSize;
     float bottomRightY = bottomLeftY;
-    fill(255, 255, 255, 150);
+    fill(255, 0, 0, 120);
     triangle(topLeftX, topLeftY, bottomLeftX, bottomLeftY, bottomRightX, bottomRightY);
     drawText (padding, fontSize);
   }
@@ -343,7 +345,24 @@ class dataTri {
     rotate (randomRotation);
     triangle(topLeftX, topLeftY, bottomLeftX, bottomLeftY, bottomRightX, bottomRightY);
     popMatrix ();
- 
+  }
+  
+  void drawYear (boolean highlighted) {
+    
+    color col;
+    if (highlighted || 
+    (state == "clicked" && clickedTri == this && highlightedTri == null)) {
+      col = color (255, 0, 0, 255);
+    } else {
+      col = color (0, 0, 0, 150);
+    }
+    int fontSize = 15;
+    float xPosition = initialX;
+    float yPosition = fontSize;
+    textSize(fontSize);
+    textAlign (TOP, CENTER);
+    fill(col);
+    text(str(year), xPosition, yPosition);
   }
 } 
 
