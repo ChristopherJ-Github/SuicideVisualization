@@ -79,14 +79,6 @@ void setFirstAndLastYears (String[] yearsStr) {
 void draw () {
   
   image(cool, 0, 0, width, height);
-  float padding = 10;
-  float yShift = (height/2) + padding;
-  float xShift = (width * (1.0/4.0)) + padding;
-  float articleWidth = width - xShift - padding;
-  float articleHeight = 1000;
-  textSize(13);
-  fill(255);
-  text(articleText, xShift, yShift, articleWidth, articleHeight);
   drawTriangles();
   updateButton(); 
 }
@@ -95,6 +87,7 @@ float timePassed = 0.0;
 float waveSpeed = 0.005;
 float waveHighlightedSpeed = 0.001;
 dataTri highlightedTri;
+dataTri clickedTri;
 
 void drawTriangles () {
   
@@ -105,7 +98,7 @@ void drawTriangles () {
   } else {
     timePassed += waveSpeed;
   }
-  
+  updateClickShift (); 
   highlightedTri = null;
   //first update the transformations and check which is highlighted
   for (int i = 0; i < dataTriangles.length; i ++) {
@@ -119,6 +112,19 @@ void drawTriangles () {
      
     dataTri dataTriangle = dataTriangles[i];
     dataTriangle.drawTriangle();
+  }
+}
+
+float currentClickShift;
+
+void updateClickShift () {
+  
+  float clickShift = (height / 2) - 100;
+  if (state == "clicked") {
+    currentClickShift = clickShift;
+  } 
+  if (state == "default") {
+    currentClickShift = 0;
   }
 }
 
@@ -174,7 +180,7 @@ class dataTri {
   void updateTransformations () {
     
     currentPositionX = initialX;
-    currentPositionY = initialY + (amplitude*sin((initialX + timePassed) * frequency));
+    currentPositionY = initialY + (amplitude*sin((initialX + timePassed) * frequency)) - currentClickShift;
   }
   
   void checkIfHighlighted () {
@@ -205,6 +211,10 @@ class dataTri {
       highlighted = true;
       checkIfClicked(bottomLength, sideLength);
     }
+    if (clickedTri == this && state == "clicked") {
+      drawDetailedTriangle (bottomLength, sideLength);
+      drawArticleText ();
+    }
     setColor (highlighted);
     placeTriangle (bottomLength, sideLength);
     fill(255); //reset color
@@ -212,11 +222,9 @@ class dataTri {
   
   void checkIfClicked (int bottomLength, int sideLength) {
     
-    if (mousePressed && state == "default") {
+    if (mousePressed) {
+      clickedTri = this;
       state = "clicked";
-    }
-    if (state == "clicked") {
-      drawDetailedTriangle (bottomLength, sideLength);
     }
   }
   
@@ -230,7 +238,7 @@ class dataTri {
     float topLeftY = height - (padding + fontSize + map(sideLength, minLength, maxLength, minLargeLength, maxLargeLength));
     float bottomLeftX = topLeftX;
     float bottomLeftY = height - (padding + fontSize);
-    float bottomRightX = map(bottomLength, minLength, maxLength, minLargeLength, maxLargeLength);
+    float bottomRightX = map(bottomLength, minLength, maxLength, minLargeLength, maxLargeLength) + padding + fontSize;
     float bottomRightY = bottomLeftY;
     fill(255, 255, 255, 150);
     triangle(topLeftX, topLeftY, bottomLeftX, bottomLeftY, bottomRightX, bottomRightY);
@@ -256,6 +264,18 @@ class dataTri {
     title = suicidesInt + " Suicides Per 100,000";
     text(title, 0, 0);
     popMatrix();
+  }
+  
+  void drawArticleText () {
+    
+    float padding = 10;
+    float yShift = (height/2) + padding;
+    float xShift = (width * (1.0/4.0)) + padding;
+    float articleWidth = width - xShift - padding;
+    float articleHeight = 1000;
+    textSize(13);
+    fill(255);
+    text(articleText, xShift, yShift, articleWidth, articleHeight);
   }
   
   void setColor (boolean highlighted) {
@@ -291,10 +311,6 @@ class dataTri {
     triangle(topLeftX, topLeftY, bottomLeftX, bottomLeftY, bottomRightX, bottomRightY);
     popMatrix ();
  
-  }
-  
-  void update(){
-    
   }
 } 
 
