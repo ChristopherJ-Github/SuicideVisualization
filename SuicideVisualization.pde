@@ -1,5 +1,4 @@
 PImage cool;
-String articleText = "";
 String state;
 
 void setup() {
@@ -9,11 +8,6 @@ void setup() {
   size(1280, 720);
   surface.setResizable(true);
   initializeDataTriangles();
-  String[] lines = loadStrings("textTest.txt");
-  for (int i = 0 ; i < lines.length; i++) {
-    articleText += lines[i];
-    articleText += "\n";
-  }
   state = "default";
 }
 
@@ -115,6 +109,19 @@ void drawTriangles () {
   }
 }
 
+void mousePressed () {
+  
+  checkForDeselect ();
+  updateClickShift ();
+}
+
+void checkForDeselect () {
+  
+  if (highlightedTri == null && state == "clicked") {
+    state = "default";
+  }
+}
+
 float currentClickShift;
 
 void updateClickShift () {
@@ -152,6 +159,7 @@ class dataTri {
     setInitialPosition(year);
     randomRotation = random(0.0, 2.0 * PI);
     setLengths();
+    checkForArticle(year);
   } 
   
   int suicideLength, unemploymentLength;
@@ -175,6 +183,27 @@ class dataTri {
     int padding = 50; //padding affects the sin wave's frequency
     initialX = round(map(year, firstYear, lastYear, padding, width - padding)); 
     initialY = height/2;
+  }
+  
+  void checkForArticle (int year) {
+    
+    String filename = str(year) + ".txt";
+    File file = new File(dataPath(filename));
+    if (file.exists())
+    {
+      setArticle(filename);
+    }
+  }
+  
+  String articleText = "";
+  
+  void setArticle (String filename) {
+    
+    String[] lines = loadStrings(filename);
+    for (int i = 0 ; i < lines.length; i++) {
+      articleText += lines[i];
+      articleText += "\n";
+    }
   }
   
   void updateTransformations () {
@@ -209,22 +238,26 @@ class dataTri {
     boolean highlighted = false;
     if (highlightedTri == this) {
       highlighted = true;
-      checkIfClicked(bottomLength, sideLength);
+      checkIfClicked();
     }
     if (clickedTri == this && state == "clicked") {
       drawDetailedTriangle (bottomLength, sideLength);
-      drawArticleText ();
+      if (articleText != "") {
+        drawArticleText ();
+      }
     }
     setColor (highlighted);
     placeTriangle (bottomLength, sideLength);
     fill(255); //reset color
   }
   
-  void checkIfClicked (int bottomLength, int sideLength) {
+  void checkIfClicked () {
     
     if (mousePressed) {
       clickedTri = this;
-      state = "clicked";
+      if (state == "default") {
+        state = "clicked";
+      }
     }
   }
   
@@ -325,13 +358,15 @@ void updateButton() {
   }
   ellipse(50, 50, 75, 75);
 }
-  
+
+/*
 void mousePressed() {
   
   if(overButton) { 
     link("http://www.economist.com/node/10329261");
   } 
 }
+*/
 
 void mouseMoved() { 
   
