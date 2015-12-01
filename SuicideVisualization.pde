@@ -1,9 +1,9 @@
-PImage cool;
+PImage backgroundImage;
 String state;
 
 void setup() {
   
-  cool = loadImage("japanGrey.jpg");
+  backgroundImage = loadImage("japanGrey.jpg");
   frameRate(60);
   size(1280, 720);
   surface.setResizable(true);
@@ -72,7 +72,7 @@ void setFirstAndLastYears (String[] yearsStr) {
 
 void draw () {
   
-  image(cool, 0, 0, width, height);
+  image(backgroundImage, 0, 0, width, height);
   drawTriangles();
   updateButton(); 
 }
@@ -295,7 +295,7 @@ class dataTri {
     
     pushMatrix();
     textAlign (BOTTOM, LEFT);
-    translate(fontSize, height);
+    translate(fontSize, height - padding);
     title = suicidesInt + " Suicides Per 100,000";
     text(title, 0, 0);
     popMatrix();
@@ -311,10 +311,10 @@ class dataTri {
     fill(255, 255, 255, 150);
     rect(backgroundX, backgroundY, backgroundWidth, backgroundHeight);
     
-    float padding = 10;
+    float padding = 18;
     float articleX = backgroundX + padding;
     float articleY = backgroundY + padding;
-    float articleWidth = backgroundWidth - padding;
+    float articleWidth = backgroundWidth - (2 * padding);
     float articleHeight = backgroundHeight;
     textSize(13);
     fill(0);
