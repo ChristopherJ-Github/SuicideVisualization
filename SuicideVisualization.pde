@@ -303,14 +303,22 @@ class dataTri {
   
   void drawArticleText () {
     
+    float backgroundPadding = 10;
+    float backgroundY = (height/2) + backgroundPadding;
+    float backgroundX = (width * (1.0/4.0)) + backgroundPadding;
+    float backgroundWidth = width - backgroundX - backgroundPadding;
+    float backgroundHeight = 1000;
+    fill(255, 255, 255, 150);
+    rect(backgroundX, backgroundY, backgroundWidth, backgroundHeight);
+    
     float padding = 10;
-    float yShift = (height/2) + padding;
-    float xShift = (width * (1.0/4.0)) + padding;
-    float articleWidth = width - xShift - padding;
-    float articleHeight = 1000;
+    float articleX = backgroundX + padding;
+    float articleY = backgroundY + padding;
+    float articleWidth = backgroundWidth - padding;
+    float articleHeight = backgroundHeight;
     textSize(13);
-    fill(255);
-    text(articleText, xShift, yShift, articleWidth, articleHeight);
+    fill(0);
+    text(articleText, articleX, articleY, articleWidth, articleHeight);
   }
   
   void setColor (boolean highlighted) {
