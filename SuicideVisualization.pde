@@ -265,9 +265,9 @@ class dataTri {
   
   void drawDetailedTriangle (int bottomLength, int sideLength) {
     
-    int fontSize = 20;
+    int fontSize = 18;
     int padding = 10;
-    float minLargeLength = 10;
+    float minLargeLength = 30;
     float maxLargeLength = (width * (1.0/4.0)) - (padding + fontSize);
     float topLeftX = padding + fontSize;
     float topLeftY = height - (padding + fontSize + map(sideLength, minLength, maxLength, minLargeLength, maxLargeLength));
@@ -283,7 +283,7 @@ class dataTri {
   void drawText (int padding, int fontSize) {
     
     textSize(fontSize);
-    fill(255, 255, 255, 255);
+    fill(255, 255, 255, 150);
     
     pushMatrix();
     textAlign (BOTTOM, RIGHT);
@@ -305,7 +305,7 @@ class dataTri {
     
     float backgroundPadding = 10;
     float backgroundY = (height/2) + backgroundPadding;
-    float backgroundX = (width * (1.0/4.0)) + backgroundPadding;
+    float backgroundX = (width /1.5) + backgroundPadding;
     float backgroundWidth = width - backgroundX - backgroundPadding;
     float backgroundHeight = 1000;
     fill(255, 255, 255, 150);
