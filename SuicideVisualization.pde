@@ -357,8 +357,18 @@ class dataTri {
     float titleY = backgroundY + (backgroundHeight/2.0);
     textAlign(LEFT, CENTER);
     textSize(20);
-    fill(0, 0, 0, 200);
-    text(articleTitle, titleX, titleY);
+    
+    String text;
+    color textColor;
+    if (articleLinkHighlighted) {
+      text = "Source Link";
+      textColor = color(255, 255, 255, 200);
+    } else {
+      text = articleTitle;
+      textColor = color(0, 0, 0, 200);
+    }
+    fill(textColor);
+    text(text, titleX, titleY);
   }
   
   boolean overRect(float x, float y, float width, float height)  {
