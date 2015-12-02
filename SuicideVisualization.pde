@@ -74,7 +74,6 @@ void draw () {
   
   image(backgroundImage, 0, 0, width, height);
   drawTriangles();
-  updateButton(); 
 }
 
 float timePassed = 0.0;
@@ -82,6 +81,7 @@ float waveSpeed = 0.005;
 float waveHighlightedSpeed = 0.001;
 dataTri highlightedTri;
 dataTri clickedTri;
+boolean articleLinkHighlighted;
 
 void drawTriangles () {
   
@@ -94,6 +94,7 @@ void drawTriangles () {
   }
   updateClickShift (); 
   highlightedTri = null;
+  articleLinkHighlighted = false;
   //first update the transformations and check which is highlighted
   for (int i = 0; i < dataTriangles.length; i ++) {
      
@@ -196,14 +197,23 @@ class dataTri {
     }
   }
   
+  String articleTitle = "";
+  String articleLink = "";
   String articleText = "";
   
   void setArticle (String filename) {
     
     String[] lines = loadStrings(filename);
     for (int i = 0 ; i < lines.length; i++) {
-      articleText += lines[i];
-      articleText += "\n";
+      String text = lines[i];
+      if (i == 0) {
+        articleTitle = text;
+      } else if (i == 1) {
+        articleLink = text;
+      } else {
+        articleText += text;
+        articleText += "\n";
+      }
     }
   }
   
@@ -301,24 +311,63 @@ class dataTri {
     popMatrix();
   }
   
+  float articleBackgroundPadding;
+  float articleBackgroundY;
+  float articleBackgroundX;
+  float articleBackgroundWidth;
+  float articleBackgroundHeight;
+  
   void drawArticleText () {
     
-    float backgroundPadding = 10;
-    float backgroundY = (height/2) + backgroundPadding;
-    float backgroundX = (width /1.5) + backgroundPadding;
-    float backgroundWidth = width - backgroundX - backgroundPadding;
-    float backgroundHeight = 1000;
+    articleBackgroundPadding = 10;
+    articleBackgroundY = (height/2) + articleBackgroundPadding;
+    articleBackgroundX = (width /1.5) + articleBackgroundPadding;
+    articleBackgroundWidth = width - articleBackgroundX - articleBackgroundPadding;
+    articleBackgroundHeight = 1000;
     fill(255, 255, 255, 150);
-    rect(backgroundX, backgroundY, backgroundWidth, backgroundHeight);
+    rect(articleBackgroundX, articleBackgroundY, articleBackgroundWidth, articleBackgroundHeight);
     
     float padding = 18;
-    float articleX = backgroundX + padding;
-    float articleY = backgroundY + padding;
-    float articleWidth = backgroundWidth - (2 * padding);
-    float articleHeight = backgroundHeight;
+    drawTitle (articleBackgroundX, articleBackgroundY, articleBackgroundWidth, padding);
+    float articleX = articleBackgroundX + padding;
+    float articleY = articleBackgroundY + padding;
+    float articleWidth = articleBackgroundWidth - (2 * padding);
+    float articleHeight = articleBackgroundHeight;
     textSize(13);
     fill(0);
+    textAlign(TOP, LEFT);
     text(articleText, articleX, articleY, articleWidth, articleHeight);
+  }
+  
+  void drawTitle (float backgroundX, float backgroundY, float backgroundWidth, float titlePadding) {
+    
+    float backgroundHeight = 50;
+    backgroundY = backgroundY - backgroundHeight;
+    color backgroundColor;
+    
+    articleLinkHighlighted = overRect(backgroundX, backgroundY, backgroundWidth, backgroundHeight);
+    if (articleLinkHighlighted) {
+      backgroundColor = color(255, 0, 0, 100);
+    } else {
+      backgroundColor = color(255, 255, 255, 200);
+    }
+    fill(backgroundColor);
+    rect(backgroundX, backgroundY, backgroundWidth, backgroundHeight);
+    float titleX = backgroundX + titlePadding;
+    float titleY = backgroundY + (backgroundHeight/2.0);
+    textAlign(LEFT, CENTER);
+    textSize(20);
+    fill(0, 0, 0, 200);
+    text(articleTitle, titleX, titleY);
+  }
+  
+  boolean overRect(float x, float y, float width, float height)  {
+    if (mouseX >= x && mouseX <= x+width && 
+        mouseY >= y && mouseY <= y+height) {
+      return true;
+    } else {
+      return false;
+    }
   }
   
   void setColor (boolean highlighted) {
@@ -374,43 +423,11 @@ class dataTri {
   }
 } 
 
-boolean overButton = false;
-  
-void updateButton() {
-  
-  if(overButton == true) {
-    fill(255);
-  } else {
-    noFill();
-  }
-  ellipse(50, 50, 75, 75);
-}
-
-/*
 void mousePressed() {
   
-  if(overButton) { 
-    link("http://www.economist.com/node/10329261");
+  if(articleLinkHighlighted && state == "clicked") { 
+    if (clickedTri.articleLink != "") {
+      link(clickedTri.articleLink);
+    } 
   } 
-}
-*/
-
-void mouseMoved() { 
-  
-  checkButtons(); 
-}
-
-void mouseDragged() {
-  
-  checkButtons(); 
-}
-
-void checkButtons() {
-
-  if(mouseX > 50 && mouseX < 125 &&
-     mouseY > 50 && mouseY <125) {
-    overButton = true;   
-  } else {
-    overButton = false;
-  }
 }
