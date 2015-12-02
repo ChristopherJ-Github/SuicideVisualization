@@ -361,7 +361,7 @@ class dataTri {
     String text;
     color textColor;
     if (articleLinkHighlighted) {
-      text = "Source Link";
+      text = "Source";
       textColor = color(255, 255, 255, 200);
     } else {
       text = articleTitle;
